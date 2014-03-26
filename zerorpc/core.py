@@ -291,7 +291,8 @@ class Client(SocketBase, ClientBase):
         for m in self._zerorpc_list():
             def fn(self, *args, **kargs):
                 self(m, *args, **kargs)
-            setattr(self, m, MethodType(fn, self, type(self)))
+            if m not in dir(self): # protect anything I may not have caught
+                setattr(self, m, MethodType(fn, self, type(self)))
 
     def close(self):
         ClientBase.close(self)
