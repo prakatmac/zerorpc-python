@@ -264,7 +264,7 @@ class Server(SocketBase, ServerBase):
         else:
             # someone must be trying to create a zeroservice by subclassing Server
             methods = ServerBase._build_method_dict(self)
-            for k in ['close', 'stop', 'run']:
+            for k in ['close', 'stop', 'run',  'connect']:
                 del methods[k]
 
         name = name or ServerBase._extract_name(methods)
