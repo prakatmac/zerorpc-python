@@ -60,3 +60,21 @@ def test_client_quick_connect():
     client = zerorpc.Client(endpoint)
 
     assert client.lolita() == 42
+
+def test_client_method_reflection():
+    endpoint = random_ipc_endpoint()
+
+    class MySrv(zerorpc.Server):
+
+        def lolita(self):
+            return 42
+
+    srv = MySrv()
+    srv.bind(endpoint)
+    gevent.spawn(srv.run)
+
+    client = zerorpc.Client(endpoint)
+
+    assert client.lolita() == 42
+    client._reflect()
+    assert 'lolita' in dir(srv)

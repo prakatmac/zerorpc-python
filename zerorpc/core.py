@@ -22,6 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from types import MethodType
 
 import sys
 import traceback
@@ -284,6 +285,13 @@ class Client(SocketBase, ClientBase):
                 passive_heartbeat)
         if connect_to:
             self.connect(connect_to)
+
+    def _reflect(self):
+        # WARNING: This should only be called once the client has an active connection
+        for m in self._zerorpc_list():
+            def fn(self, *args, **kargs):
+                self(m, *args, **kargs)
+            setattr(self, m, MethodType(fn, self, type(self)))
 
     def close(self):
         ClientBase.close(self)
