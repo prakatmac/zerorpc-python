@@ -2,6 +2,17 @@ package:
   name: zerorpsanity
   version: !!str 0.1
 
+source:
+  git_url: git@github.com:prakatmac/zerorpc-python.git
+  git_tag: master
+  
+  #fn: zerorpsanity-0.1.zip
+  #url: https://github.com/prakatmac/zerorpc-python/archive/master.zip
+  #md5: 916a3d3dce9c5fe658908c45704858bb
+#  patches:
+   # List any patch files here
+   # - fix.patch
+
 build:
   entry_points:
     - zerorpc = zerorpc.cli:main
