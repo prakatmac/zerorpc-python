@@ -24,6 +24,7 @@
 
 
 import time
+import warnings
 import gevent.pool
 import gevent.queue
 import gevent.event
@@ -107,7 +108,8 @@ class HeartBeatOnChannel(object):
 
     def emit_event(self, event):
         if self._lost_remote:
-            raise self._lost_remote_exception()
+            # raise self._lost_remote_exception()
+            warnings.warn('Might have lost remote after {0}s heartbeat'.format(self._heartbeat_freq*2))
         self._channel.emit_event(event)
 
     def emit(self, name, args, xheader=None):
@@ -116,7 +118,8 @@ class HeartBeatOnChannel(object):
 
     def recv(self, timeout=None):
         if self._lost_remote:
-            raise self._lost_remote_exception()
+            # raise self._lost_remote_exception()
+            warnings.warn('Might have lost remote after {0}s heartbeat'.format(self._heartbeat_freq*2))
 
         try:
             event = self._input_queue.get(timeout=timeout)
